@@ -12,7 +12,8 @@ plt.interactive(False)  # This option may or may not be needed according to your
 def animateEEG(i):  # A function to plot EEG, this will be called every "plotUpdateInterval" ms by FuncAnimation
     muse.updateBuffer()  # Pulls a chunk of EEG data from MUSE hardware, filters them (if applicable) and
     # updates the internal variables. The next line gets these new values.
-    plotX, plotBuffer = muse.getPlot()  # Get timestamps (first output) and (filtered, if applicable) EEG data.
+    #plotX, plotBuffer = muse.getPlot()  # Get timestamps (first output) and (filtered, if applicable) EEG data.
+    plotX, plotBuffer = muse.getFilteredPlot('Average',15)
 
     # Clear the plot scenes to update
     ax1.clear()
@@ -83,9 +84,9 @@ def close_handle(evt):  # This function will be called when the plot window is c
 
 
 if __name__ == "__main__":  # This function runs when you run this file (python example.py)
-    museName = 'Muse-3BEA'  # target MUSE name.
+    museName = 'Muse-C87E'  # target MUSE name.
 
-    plotWhat = 3  # Choose what to plot, 1: wave, 2: FFT, 3: wavelet
+    plotWhat = 1  # Choose what to plot, 1: wave, 2: FFT, 3: wavelet
     plotUpdateInterval = 100  # How often the plots should be updated
     plotLength = 512  # Length of the plot (in samples). For a 2 second plot, set this variable to be sampleRate*2
 

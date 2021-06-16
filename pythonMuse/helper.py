@@ -38,7 +38,7 @@ def doMuseFilteredPlot(toFiltered, filter, filterLength):
 
     if filter == 'Average':
         for i in range(numSensors):
-            toFiltered[:,i] = np.convolve(toFiltered[:,i], np.ones(filterLength)/filterLength, mode='valid') # Moving averate filter. Source: https://stackoverflow.com/questions/13728392/moving-average-or-running-mean
+            toFiltered[:,i] = np.convolve(toFiltered[:,i], np.ones(filterLength)/filterLength, mode='same') # Moving averate filter. Source: https://stackoverflow.com/questions/13728392/moving-average-or-running-mean
 
     return toFiltered
 
