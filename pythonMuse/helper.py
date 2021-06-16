@@ -1,5 +1,6 @@
 import numpy as np
 from scipy import fft as spfft
+from scipy.signal import lfilter
 
 
 def is_data_valid(data, timestamps):
@@ -32,6 +33,14 @@ def doMuseFFT(toFFT, sRate):
 
     return coefficients
 
+def doMuseFilteredPlot(toFiltered, filter, filterLength):
+    numSensors = toFiltered.shape[1] # Expected=4
+
+    if filter == 'Average':
+        for i in range(numSensors):
+            toFiltered[:,i] = np.convolve(toFiltered[:,i], np.ones(filterLength)/filterLength, mode='valid') # Moving averate filter. Source: https://stackoverflow.com/questions/13728392/moving-average-or-running-mean
+
+    return toFiltered
 
 def doMuseWavelet(toWavelet, sRate, frequencySteps, minimumFrequency, maximumFrequency):
     mortletParameter = [6]
