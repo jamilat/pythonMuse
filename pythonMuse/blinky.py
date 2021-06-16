@@ -1,7 +1,10 @@
+#!/usr/bin/python
 # MASTERFILE for blink detection project
 
 from pythonMuse.Muse import Muse
 import matplotlib;
+import sys
+import re
 
 matplotlib.use("TkAgg")  # This option may or may not be needed according to your OS and Python setup (Ipython...)
 # See this link for further details: https://stackoverflow.com/questions/7156058/matplotlib-backends-do-i-care
@@ -37,6 +40,10 @@ def close_handle(evt):  # This function will be called when the plot window is c
     muse.disconnect()  # Disconnecting MUSE
 
 if __name__ == "__main__":  # This function runs when you run this file (python example.py)
+    # TODO: take cli
+    #  museName, plotWhat, plotUpdateInterval, plotLength, sampleRate, highFreq, lowFreq, notchFreq, filterOrder
+    print(sys.argv)
+
     museName = 'Muse-3BEA'  # target MUSE name.
 
     plotWhat = 3  # Choose what to plot, 1: wave, 2: FFT, 3: wavelet
