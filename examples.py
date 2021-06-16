@@ -83,7 +83,7 @@ def close_handle(evt):  # This function will be called when the plot window is c
 
 
 if __name__ == "__main__":  # This function runs when you run this file (python example.py)
-    museName = 'Muse-3BEA'  # target MUSE name.
+    museName = 'Muse-C87E'  # target MUSE name.
 
     plotWhat = 3  # Choose what to plot, 1: wave, 2: FFT, 3: wavelet
     plotUpdateInterval = 100  # How often the plots should be updated
