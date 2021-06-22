@@ -5,13 +5,23 @@ from pythonMuse.Muse import Muse
 import matplotlib;
 import sys
 import re
+from enum import Enum
 
+class plotWhat(Enum):
+    wave = 1
+    fft = 2
+    wavelet = 3
+    
 matplotlib.use("TkAgg")  # This option may or may not be needed according to your OS and Python setup (Ipython...)
 # See this link for further details: https://stackoverflow.com/questions/7156058/matplotlib-backends-do-i-care
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 plt.interactive(False)  # This option may or may not be needed according to your OS and Python setup (Ipython...)
+def getModes():
+    if 'museName' not in modeDict:
+        modeDict['museName'] = 'Muse-3BEA'
+    if ''
 
 def animateEEG(i):  # A function to plot EEG, this will be called every "plotUpdateInterval" ms by FuncAnimation
     muse.updateBuffer()  # Pulls a chunk of EEG data from MUSE hardware, filters them (if applicable) and
@@ -39,13 +49,15 @@ def close_handle(evt):  # This function will be called when the plot window is c
     print("disconnecting Muse")
     muse.disconnect()  # Disconnecting MUSE
 
-if __name__ == "__main__":  # This function runs when you run this file (python example.py)
-    # TODO: take cli
-    #  museName, plotWhat, plotUpdateInterval, plotLength, sampleRate, highFreq, lowFreq, notchFreq, filterOrder
-    print(sys.argv)
+if __name__ == "__main__":
+    modeDict = {}
+    for arg in sys.argv:
+        m = re.search('(.*)=(.*)', arg)
+        if m is not None:
+            print(m[0], m[1], m[2])
+            modeDict[m[1]] = m[2]
 
-    museName = 'Muse-3BEA'  # target MUSE name.
-
+    modeDict = getModes(modeDict)
     plotWhat = 3  # Choose what to plot, 1: wave, 2: FFT, 3: wavelet
     plotUpdateInterval = 100  # How often the plots should be updated
     plotLength = 512  # Length of the plot (in samples). For a 2 second plot, set this variable to be sampleRate*2
