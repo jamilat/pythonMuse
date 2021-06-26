@@ -1,5 +1,8 @@
 import numpy as np
 from scipy import fft as spfft
+from scipy.signal import lfilter
+from scipy.signal import cheby1
+from scipy.signal import lfilter
 
 
 def is_data_valid(data, timestamps):
@@ -32,6 +35,30 @@ def doMuseFFT(toFFT, sRate):
 
     return coefficients
 
+def doMuseFilteredPlot(toFiltered, filter, filterLength):
+    numSensors = toFiltered.shape[1] # Expected=4
+
+    if filter == 'Average':
+        for i in range(numSensors):
+            toFiltered[:,i] = np.convolve(toFiltered[:,i], np.ones(filterLength)/filterLength, mode='same') # Moving averate filter. Source: https://stackoverflow.com/questions/13728392/moving-average-or-running-mean
+    elif filter == 'Lowpass': # Source: https://stackoverflow.com/questions/46784822/low-pass-chebyshev-type-i-filter-with-scipy
+        
+        # Prepare filter parameters
+        fs = 256 # Double check this sampling rate
+        order = 5
+        Apass = 0.001
+        fcut = 50 # Cutoff frequency
+        wn = 2*fcut/fs
+
+        # Create Chebyshev filter
+        b, a = cheby1(order, Apass, wn)
+
+        # Calculate filtered input
+        toFiltered = lfilter(b, a, toFiltered)
+    else:
+        raise ValueError('doMuseFilteredPlot: Filter not found.')
+
+    return toFiltered
 
 def doMuseWavelet(toWavelet, sRate, frequencySteps, minimumFrequency, maximumFrequency):
     mortletParameter = [6]

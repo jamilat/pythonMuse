@@ -234,6 +234,21 @@ class Muse:
         fftFrequencies = np.arange(1, fftCoefficients.shape[0] + 1, 1)  # X-axis values for the FFT bar chart
         return fftFrequencies, fftCoefficients
 
+    def getFilteredPlot(self, filter, filterLength):
+        '''
+        Purpose: Return the raw EEG data run through a filter
+
+        Filter options: Average, LowPass
+
+        Inputs:
+            filter          (string)    :   Type of filter
+            filterLength    (int)       :   Length of filter
+        '''
+        filteredBuffer = doMuseFilteredPlot(toFiltered=self.plotBuffer, filter=filter, filterLength=filterLength) # TODO: Define this in helper.py
+        return self.plotX, filteredBuffer
+
+
+
     def getPlotWavelet(self, frequencySteps=60, minimumFrequency=1, maximumFrequency=30):
         return doMuseWavelet(toWavelet=self.plotBuffer, sRate=self.sampleRate, frequencySteps=frequencySteps,
                              minimumFrequency=minimumFrequency, maximumFrequency=maximumFrequency)
