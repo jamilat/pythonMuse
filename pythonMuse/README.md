@@ -1,0 +1,2 @@
+## To run program
+``python3 blinky.py museName='sampleMN' plotWhat='samplePW' plotUpdateInterval='samplePUI' plotLength='samplePL' sampleRate='sampleSR' highFreq='sampleHF' lowFreq='sampleLF' notchFreq='sampleNF' filterOrder='sampleFO'``
