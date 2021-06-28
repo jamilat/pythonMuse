@@ -5,6 +5,7 @@ from pythonMuse.Muse import Muse
 import matplotlib;
 import sys
 import re
+from gpiozero import LED
 
 # constants used for data view modes
 wave = 1
@@ -61,7 +62,13 @@ def plotMuse(d):
 def animateEEG(i):  # A function to plot EEG, this will be called every "plotUpdateInterval" ms by FuncAnimation
     muse.updateBuffer()  # Pulls a chunk of EEG data from MUSE hardware, filters them (if applicable) and
     # updates the internal variables. The next line gets these new values.
-    plotX, plotBuffer = muse.getPlot()  # Get timestamps (first output) and (filtered, if applicable) EEG data.
+    #plotX, plotBuffer = muse.getPlot()  # Get timestamps (first output) and (filtered, if applicable) EEG data.
+    plotX, plotBuffer = muse.getFilteredPlot('Average', 15)
+
+    if muse.getBlinks(plotBuffer):
+        blink_led.on()
+    else:
+        blink_led.off()
 
     # Clear the plot scenes to update
     ax1.clear()
@@ -100,6 +107,9 @@ if __name__ == "__main__":
     notchFreq = 60
     filterOrder = 5  # Butterworth filter order for low/high pass filters
     # (see:https://en.wikipedia.org/wiki/Butterworth_filter)
+
+    # Define RPi Pins
+    blink_led = LED(26)
 
     # Here we create the main object from Muse class. This object (muse) will be used for pulling eeg, plotting, ...
     muse = Muse(target_name=modeDict['museName'], plotLength=modeDict['plotLength'], sampleRate=modeDict['sampleRate'], highPassFreq=highFreq,

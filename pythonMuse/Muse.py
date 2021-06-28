@@ -6,6 +6,8 @@ from .butterFilters import *
 from .constants import *
 from .helper import *
 
+from gpiozero import LED
+
 
 class Muse:
 
@@ -247,7 +249,11 @@ class Muse:
         filteredBuffer = doMuseFilteredPlot(toFiltered=self.plotBuffer, filter=filter, filterLength=filterLength) # TODO: Define this in helper.py
         return self.plotX, filteredBuffer
 
-
+    def getBlinks(self, buffer, channel=0, threshold=250):
+        for val in buffer[:,channel]:
+            if val > threshold:
+                return True
+        return False
 
     def getPlotWavelet(self, frequencySteps=60, minimumFrequency=1, maximumFrequency=30):
         return doMuseWavelet(toWavelet=self.plotBuffer, sRate=self.sampleRate, frequencySteps=frequencySteps,
